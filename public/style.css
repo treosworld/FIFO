@@ -1,0 +1,65 @@
+#lineDiv {
+    width: 100%;
+    height: 100%;
+}
+
+#line {
+    height: 6px;
+    width: 90%;
+    background: rgb(74, 144, 226);
+    border-radius: 5px;
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    position: relative;
+    transition: 1s  
+}
+
+.circle {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 15px;
+    position: absolute;
+    top: -7px;
+    border: 3px solid rgb(74, 144, 226);
+    cursor: pointer;
+}
+
+.marker {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: -22px;
+    cursor: pointer;
+}
+
+.marker-div {
+    position: absolute;
+    transition: 5s;
+}
+
+.marker-div .index {
+    width: auto;
+    height: auto;
+    padding: 10px;
+    white-space: nowrap;
+    display: inline-block;
+    color: rgb(74, 144, 226);
+    position: absolute;
+    top: 20px;
+}
+
+.terminal {
+    background: rgb(74, 144, 226);
+}
+
+#line:hover {
+    box-shadow: 0 5px 25px rgb(74, 144, 226);
+    cursor: pointer;
+}
+
+#line img:hover{
+    transform: rotateY(180deg);
+    transition: .5s;
+}

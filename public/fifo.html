@@ -1,0 +1,2292 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Wallet</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .card {
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        border-radius: 0.25rem;
+        margin-bottom: 1rem;
+      }
+      .card-header {
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0;
+        background-color: rgba(0, 0, 0, 0.03);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+      }
+      .card-body {
+        -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 1.25rem;
+      }
+      .table > tbody > tr > td {
+        border-top: none;
+      }
+
+      /* Style The Dropdown Button */
+      .dropbtn {
+        background-color: #8dc448;
+        color: white;
+        padding: 9px 12px;
+        font-size: 12px;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* The container <div> - needed to position the dropdown content */
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      /* Dropdown Content (Hidden by Default) */
+      .dropdown-content {
+        /* display: none; */
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+
+      /* Links inside the dropdown */
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+
+      /* Change color of dropdown links on hover */
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+
+      /* Show the dropdown menu on hover */
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      /* Change the background color of the dropdown button when the dropdown content is shown */
+      .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+      }
+    </style>
+    <style>
+      .menu-option {
+        display: none;
+      }
+      label {
+        cursor: pointer;
+      }
+      #Buy input[type="radio"]:checked {
+        position: absolute;
+        opacity: 0;
+        z-index: -1;
+      }
+      input[type="checkbox"]:checked {
+        position: absolute;
+        opacity: 0;
+        z-index: -1;
+      }
+      input[type="number"] {
+        text-align: center;
+        width: 110px;
+      }
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0;
+      }
+      .radio-label {
+        transition: 0.25s all ease;
+      }
+      .token-checkbox-labels {
+        transition: 0.25s all ease;
+      }
+      input[type="radio"]:checked + label,
+      input[type="checkbox"]:checked + label {
+        padding-left: 10px;
+        padding-right: 10px;
+        border: 1px solid black;
+        border-radius: 10px;
+        background-color: rgb(74, 144, 226);
+        color: white;
+      }
+      .radio-buttons {
+        padding-right: 15px;
+      }
+      .token-checkboxes {
+        padding-right: 5px;
+      }
+      input[type="Submit"]:hover {
+        background-color: rgb(74, 144, 226);
+        color: white;
+      }
+      .Close-Modal-Button:hover {
+        background-color: rgb(74, 144, 226);
+        color: white;
+      }
+      .Close-Button,
+      .Widget-Close-Button {
+        display: none;
+        color: rgb(74, 144, 226);
+        cursor: pointer;
+        margin-top: 5px;
+      }
+      .Show-Close-Button {
+        display: block;
+      }
+      #transactions-collapse tbody > tr:hover {
+        box-shadow: 0 5px 25px rgb(74, 144, 226);
+        cursor: pointer;
+      }
+      #Sell-Order-Book-collapse tbody > tr:hover {
+        box-shadow: 0 5px 25px rgb(74, 144, 226);
+        cursor: pointer;
+      }
+      #Wallets-Panel {
+        color: rgb(74, 144, 226);
+        width: 500px;
+        cursor: pointer;
+      }
+      #Wallets-Panel img {
+        height: 40px;
+        width: auto;
+        margin-bottom: 10px;
+        margin-left: 5px;
+      }
+      #Wallets-Panel img:hover {
+        height: 50px;
+        width: auto;
+        margin-bottom: 10px;
+        margin-left: -10px;
+      }
+      #Left-Widget-Panel-Head {
+        margin-left: 50px;
+        margin-bottom: 10px;
+        color: rgb(74, 144, 226);
+      }
+      #Left-Widget-Panel {
+        margin-top: 10px;
+        cursor: pointer;
+      }
+      #Left-Widget-Panel div {
+        margin-left: 60px;
+        margin-bottom: 20px;
+        cursor: pointer;
+      }
+      .Deposit-Transaction-Filter-Dropdown,
+      .Withdrawal-Transaction-Filter-Dropdown {
+        padding: 5px;
+        border-radius: 10px;
+      }
+      .HideWalletWidget,
+      .HideToken {
+        display: none;
+      }
+      .ChartButtons {
+        background-color: white;
+      }
+      .ChartButtons:hover,
+      .Charts-Filter-Dropdown-Button:hover {
+        background-color: rgb(74, 144, 226);
+        color: white;
+      }
+      #LogoTimer{
+      position: absolute;
+      width: 90%;
+      height: 150px;
+      overflow: hidden;
+      margin-top: 10px; 
+      }
+
+      .TreosLogoTimer {
+      position: absolute;
+      left: 25%;
+      top: 0;
+      display: none;
+      }
+
+      #GreyedLogo{
+      filter: grayscale(100%);
+      overflow: hidden;
+      }
+    </style>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./Charts/assets/css/style.css"
+    />
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+      $(function() {
+        $(".sortable").sortable({
+          containment: "parent"
+        });
+      });
+      var containment = $(".sortable").sortable("option", "containment");
+      $(".sortable").sortable("option", "containment", "parent");
+
+      $(function() {
+        $(".card-header").mouseover(function() {
+          $(this)
+            .find(".Close-Button")
+            .addClass("Show-Close-Button");
+        });
+        $(".card-header").mouseout(function() {
+          $(this)
+            .find(".Close-Button")
+            .removeClass("Show-Close-Button");
+        });
+        $(".card-header").mouseover(function() {
+          $(this)
+            .find(".Widget-Close-Button")
+            .addClass("Show-Close-Button");
+        });
+        $(".card-header").mouseout(function() {
+          $(this)
+            .find(".Widget-Close-Button")
+            .removeClass("Show-Close-Button");
+        });
+      });
+    </script>
+    <script src="notify.js"></script>
+    <script src="fifo.js"></script>
+    <!-- <script>
+        $(function() {
+          $('[data-toggle="popover"]').popover();
+        });
+      </script> -->
+  </head>
+  <body>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item active">
+        <a
+          class="nav-link"
+          id="wallets-tab"
+          data-toggle="tab"
+          href="#wallets_"
+          role="tab"
+          aria-controls="wallets_"
+          aria-expanded="true"
+        >
+          Wallets
+        </a>
+      </li>
+      <!--    <li class="nav-item">
+               <a class="nav-link" id="referrals-tab" data-toggle="tab" href="#referrals" role="tab" aria-controls="referrals" aria-expanded="false">
+                   Referrals
+               </a>
+      </li>
+           <li class="nav-item">
+               <a class="nav-link" id="bounty-tab" data-toggle="tab" href="#bounty" role="tab" aria-controls="bounty" aria-expanded="false">
+                   Bounty
+               </a>
+           </li>
+           <li class="nav-item">
+               <a class="nav-link" id="commission-tab" data-toggle="tab" href="#commission" role="tab" aria-controls="commission" aria-expanded="false">
+                   Commission
+               </a>
+           </li>
+          -->
+    </ul>
+
+    <div class="tab-content" id="myTabContent" style="margin-top: 10px">
+      <div
+        class="tab-pane active in"
+        id="wallets_"
+        role="tabpanel"
+        aria-labelledby="wallets-tab"
+      >
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div
+                id="Left-Widget-Panel-Div"
+                class="col-md-2 border-top border-bottom border-right"
+              >
+                <div id="Left-Widget-Panel-Head">
+                  Widgets
+                </div>
+
+                <div id="Left-Widget-Panel"></div>
+              </div>
+              <div id="StuffOne" class="col-md-10 sortable">
+                <div id="FuelStore" class="card">
+                  <div class="card-header">
+                    <h4 class="mb-0">
+                      <span
+                        class="display-4"
+                        data-toggle="collapse"
+                        aria-expanded="true"
+                        aria-controls="fuelStore-collapse"
+                        data-target="#fuelStore-collapse"
+                        style="cursor: pointer;font-size: 25px;"
+                      >
+                        <img
+                          src="./img/FuelStore.png"
+                          style="height:45px;width: auto;margin-bottom: 0px; margin-left: 0px;"
+                        />
+                        <strong>Fuel Store</strong></span
+                      >
+                      <button id="CheckProgressButton" class="btn btn-light border border-primary float-right">Check Progress</button>
+                      <div
+                            class="modal fade "
+                            id="Timeline-Modal"
+                            tabindex="-1"
+                            role="dialog"
+                            aria-labelledby="exampleModalCenterTitle"
+                            aria-hidden="true"
+                          >
+                            <div
+                              class="modal-dialog modal-dialog-centered modal-xl"
+                              role="document"
+                            >
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5
+                                    class="modal-title"
+                                    id="exampleModalLongTitle"
+                                  >
+                                    Timeline
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div id="Timeline" style="height: 300px;">
+
+                                    <div id="lineDiv">
+                                      <div id="line"></div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button
+                                    type="button"
+                                    class="btn btn-light border border-primary Close-Modal-Button"
+                                    data-dismiss="modal"
+                                  >
+                                    Close
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                    </h4>
+                  </div>
+                  <div id="fuelStore-collapse" class="collapse show">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <div class="card">
+                            <div class="card-body border border-primary">
+                              <div>
+                                <div
+                                  id="Buy"
+                                  class="resizable menu-hide"
+                                  style="min-height: 250px;"
+                                >
+                                  <form action="/">
+                                    <h3 class="WidgetHead">BUY TRO</h3>
+                                    <br />
+                                    <div class="input-group">
+                                      Amount :
+                                      <span style="width: 10px;"></span>
+                                      <input
+                                        type="number"
+                                        name=""
+                                        id="Buy-Order-Value-Box"
+                                        value="0"
+                                        min="0.000001"
+                                        max="10"
+                                        style="height: 30px;"
+                                      />
+                                      <div
+                                        class="input-group-append"
+                                        style="height: 30px;"
+                                      >
+                                        <span
+                                          class="input-group-text"
+                                          id="basic-addon2"
+                                          ><img
+                                            src="./img/treos.png"
+                                            alt=""
+                                            style="height:20px;width: auto;"
+                                        /></span>
+                                      </div>
+                                    </div>
+                                    <!-- <br /> -->
+                                    <p id="error-msg2"></p>
+
+                                    Pay In :
+
+                                    <br />
+                                    <span class="radio-buttons">
+                                      <input
+                                        id="btc-radio-button"
+                                        type="radio"
+                                        name="Buy-Order-Option"
+                                        value="BTC"
+                                        checked="checked"
+                                      />
+                                      <label
+                                        for="btc-radio-button"
+                                        class="radio-label"
+                                        >BTC
+                                        <img
+                                          src="./img/BTC.png"
+                                          alt=""
+                                          style="height:17px;width: auto;margin-bottom: 5px;"
+                                      /></label>
+                                    </span>
+                                    <!-- <br /> -->
+                                    <span class="radio-buttons float-right">
+                                      <input
+                                        id="bch-radio-button"
+                                        type="radio"
+                                        name="Buy-Order-Option"
+                                        value="BCH"
+                                      />
+                                      <label
+                                        for="bch-radio-button"
+                                        class="radio-label"
+                                        >BCH
+                                        <img
+                                          src="./img/BCH.png"
+                                          alt=""
+                                          style="height:17px;width: auto;margin-bottom: 5px;"
+                                      /></label>
+                                    </span>
+                                    <br />
+                                    <span class="radio-buttons">
+                                      <input
+                                        id="eth-radio-button"
+                                        type="radio"
+                                        name="Buy-Order-Option"
+                                        value="ETH"
+                                      />
+                                      <label
+                                        for="eth-radio-button"
+                                        class="radio-label"
+                                        >ETH
+                                        <img
+                                          src="./img/ETH.png"
+                                          alt=""
+                                          style="height:17px;width: auto;margin-bottom: 5px;"
+                                      /></label>
+                                    </span>
+                                    <!-- <br /> -->
+                                    <span class="radio-buttons float-right">
+                                      <input
+                                        id="eos-radio-button"
+                                        type="radio"
+                                        name="Buy-Order-Option"
+                                        value="EOS"
+                                      />
+                                      <label
+                                        for="eos-radio-button"
+                                        class="radio-label"
+                                        >EOS
+                                        <img
+                                          src="./img/EOS.png"
+                                          alt=""
+                                          style="height:17px;width: auto;margin-bottom: 5px;"
+                                      /></label>
+                                    </span>
+                                    <br>
+                                    <input
+                                      id="ltc-radio-button"
+                                      type="radio"
+                                      name="Buy-Order-Option"
+                                      value="LTC"
+                                    />
+                                    <label
+                                      for="ltc-radio-button"
+                                      class="radio-label"
+                                      >LTC
+                                      <img
+                                        src="./img/LTC.png"
+                                        alt=""
+                                        style="height:17px;width: auto;margin-bottom: 5px;"
+                                    /></label>
+                                    <!-- <br /> -->
+                                  </form>
+                                  <br />
+                                  <input
+                                    type="submit"
+                                    id="Buy-Order-Submit"
+                                    class="btn btn-light border border-primary"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="card">
+                            <div class="card-body border border-primary">
+                              <div>
+                                <div
+                                  id="Sell"
+                                  class="resizable menu-hide"
+                                  style="min-height: 250px;"
+                                >
+                                  <h3 class="WidgetHead">SELL TRO</h3>
+                                  <div
+                                    style="color:blue;font-size: 20px;margin-top: 10px;text-align: center"
+                                  >
+                                    <div id="timer"></div>
+                                    <div id="LogoTimer">
+                                      <div id="ColouredLogo" class="TreosLogoTimer"><img src="./img/treos.png" alt="" style="height:120px;width: auto;"></div>
+                                      <div id="GreyedLogo" class="TreosLogoTimer"><img src="./img/treos.png" alt="" style="height:120px;width: auto;"></div>
+                                    </div>
+                                  </div>
+                                  <div
+                                    id="SellTroControls"
+                                    style="display: none;"
+                                  >
+                                    <form action="/">
+                                      <br />
+                                      <div class="input-group">
+                                        Amount :
+                                        <span style="width: 10px;"></span>
+                                        <input
+                                          type="number"
+                                          id="Sell-Order-Value-Box"
+                                          value="0"
+                                          min="0.000001"
+                                          max="10"
+                                          style="height: 30px;"
+                                        />
+                                        <div
+                                          class="input-group-append"
+                                          style="height: 30px;"
+                                        >
+                                          <span
+                                            class="input-group-text"
+                                            id="basic-addon2"
+                                            ><img
+                                              src="./img/treos.png"
+                                              alt=""
+                                              style="height:20px;width: auto;"
+                                          /></span>
+                                        </div>
+                                      </div>
+                                      <p id="error-msg1"></p>
+                                      <input
+                                        type="radio"
+                                        name="Token-Option"
+                                        id="All-Tokens"
+                                        checked="checked"
+                                        value=""
+                                      />Accept all tokens (Recomm.) <br />
+                                      <input
+                                        type="radio"
+                                        name="Token-Option"
+                                        id="Specific-Tokens"
+                                        value=""
+                                      />Accept only Specific Tokens <br />
+                                      <div
+                                        id="Specific-Tokens-Div"
+                                        style="display: none"
+                                      >
+                                        <span class="token-checkboxes">
+                                          <input
+                                            id="btc-checkbox"
+                                            type="checkbox"
+                                            name="Specific-Token-Value"
+                                            value="BTC"
+                                          />
+                                          <label
+                                            for="btc-checkbox"
+                                            class="token-checkbox-labels"
+                                            >BTC<img
+                                              src="./img/BTC.png"
+                                              alt=""
+                                              style="height:17px;width: auto;margin-bottom: 5px;margin-left: 3px;"
+                                          /></label>
+                                        </span>
+
+                                        <span class="token-checkboxes float-right">
+                                          <input
+                                            id="bch-checkbox"
+                                            type="checkbox"
+                                            name="Specific-Token-Value"
+                                            value="BCH"
+                                          />
+                                          <label
+                                            for="bch-checkbox"
+                                            class="token-checkbox-labels"
+                                            >BCH<img
+                                              src="./img/BCH.png"
+                                              alt=""
+                                              style="height:17px;width: auto;margin-bottom: 5px;margin-left: 3px;"
+                                          /></label>
+                                        </span>
+                                        <br>
+                                        <span class="token-checkboxes">
+                                          <input
+                                            id="eth-checkbox"
+                                            type="checkbox"
+                                            name="Specific-Token-Value"
+                                            value="ETH"
+                                          />
+                                          <label
+                                            for="eth-checkbox"
+                                            class="token-checkbox-labels"
+                                            >ETH<img
+                                              src="./img/ETH.png"
+                                              alt=""
+                                              style="height:17px;width: auto;margin-bottom: 5px;margin-left: 3px;"
+                                          /></label>
+                                        </span>
+                                        
+                                        <span class="token-checkboxes float-right"
+                                          ><input
+                                            id="eos-checkbox"
+                                            type="checkbox"
+                                            name="Specific-Token-Value"
+                                            value="EOS"/>
+                                          <label
+                                            for="eos-checkbox"
+                                            class="token-checkbox-labels"
+                                            >EOS<img
+                                              src="./img/EOS.png"
+                                              alt=""
+                                              style="height:17px;width: auto;margin-bottom: 5px;margin-left: 3px;"/></label
+                                        ></span>
+                                        <br>
+                                        <span class="token-checkboxes"
+                                          ><input
+                                            id="ltc-checkbox"
+                                            type="checkbox"
+                                            name="Specific-Token-Value"
+                                            value="LTC"/>
+                                          <label
+                                            for="ltc-checkbox"
+                                            class="token-checkbox-labels"
+                                            >LTC<img
+                                              src="./img/LTC.png"
+                                              alt=""
+                                              style="height:17px;width: auto;margin-bottom: 5px;margin-left: 3px;"/></label
+                                        ></span>
+                                      </div>
+                                    </form>
+                                    <span id="Break"><br /><br /><br></span>
+                                    <input
+                                      type="Submit"
+                                      id="Sell-Order-Submit"
+                                      class="btn btn-light border border-primary"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="dropdown-divider"></div>
+                      <div>
+                        <span
+                          data-toggle="collapse"
+                          data-target="#Sell-Order-Book-collapse"
+                          style="font-size: 25px;cursor: pointer;color:rgb(74, 144, 226)"
+                        >
+                          Sell Order Book
+                        </span>
+                      </div>
+                      <div
+                        id="Sell-Order-Book-collapse"
+                        class="table table-striped table-bordered collapse show"
+                      >
+                        <table style="width: 100%">
+                          <thead>
+                            <tr>
+                              <th width="20%">Amount</th>
+                              <th>Token</th>
+                              <th width="50%">Time</th>
+                            </tr>
+                          </thead>
+                          <tbody id="Sell-Order-Book-div"></tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <div
+                            class="modal fade"
+                            id="Sell-Order-Modal"
+                            tabindex="-1"
+                            role="dialog"
+                            aria-labelledby="exampleModalCenterTitle"
+                            aria-hidden="true"
+                          >
+                            <div
+                              class="modal-dialog modal-dialog-centered"
+                              role="document"
+                            >
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5
+                                    class="modal-title"
+                                    id="exampleModalLongTitle"
+                                  >
+                                    Sell Order Details
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div id="Sell-Order-Details"></div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button
+                                    type="button"
+                                    class="btn btn-light border border-primary Close-Modal-Button"
+                                    data-dismiss="modal"
+                                  >
+                                    Close
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="Transactions" class="card">
+                  <div class="card-header">
+                    <h4 class="mb-0">
+                      <span
+                        class="display-4"
+                        data-toggle="collapse"
+                        data-target="#transactions-collapse"
+                        aria-expanded="true"
+                        aria-controls="transactions-collapse"
+                        style="cursor: pointer;font-size: 25px;"
+                      >
+                        <img
+                          src="./img/Transactions.png"
+                          style="height:45px;width: auto;margin-bottom: 0px; margin-left: 0px;"
+                        />
+                        <strong>Transactions</strong></span
+                      >
+                    </h4>
+                    <span
+                      id="Transactions-close-Button"
+                      class="float-right Widget-Close-Button"
+                      style="margin-top: -40px;font-size: 20px;"
+                      >x</span
+                    >
+                  </div>
+                  <div id="transactions-collapse" class="collapse show">
+                    <div class="card-body sortable">
+                      <div>
+                        <div style="margin-bottom: 10px">
+                          <span
+                            data-toggle="collapse"
+                            data-target="#Deposit-Transations-collapse"
+                            style="font-size: 25px;cursor: pointer;color:rgb(74, 144, 226)"
+                          >
+                            Deposits
+                          </span>
+                          <select
+                            class="float-right Deposit-Transaction-Filter-Dropdown border border-primary"
+                          >
+                            <option value="All" selected="selected"
+                              >All Transactions</option
+                            >
+                            <option value="BTC">BTC</option>
+                            <option value="ETH">ETH</option>
+                            <option value="LTC">LTC</option>
+                            <option value="EOS">EOS</option>
+                            <option value="BCH">BCH</option>
+                          </select>
+                        </div>
+                        <div
+                          id="Deposit-Transations-collapse"
+                          class="table table-striped table-bordered collapse show"
+                        >
+                          <table style="width: 100%">
+                            <thead>
+                              <tr>
+                                <th width="25%">Time</th>
+                                <th width="16%">Token</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th width="40%">Reference</th>
+                              </tr>
+                            </thead>
+                            <tbody id="Deposit-Transactions-div"></tbody>
+                          </table>
+                        </div>
+                        <div>
+                          <!-- Modal -->
+                          <div
+                            class="modal fade"
+                            id="Deposit-Transaction-Modal"
+                            tabindex="-1"
+                            role="dialog"
+                            aria-labelledby="exampleModalCenterTitle"
+                            aria-hidden="true"
+                          >
+                            <div
+                              class="modal-dialog modal-dialog-centered"
+                              role="document"
+                            >
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5
+                                    class="modal-title"
+                                    id="exampleModalLongTitle"
+                                  >
+                                    Transaction Details
+                                  </h5>
+                                  <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                  >
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div id="Deposit-Transaction-Details"></div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button
+                                    type="button"
+                                    class="btn btn-light border border-primary Close-Modal-Button"
+                                    data-dismiss="modal"
+                                  >
+                                    Close
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div style="margin-bottom: 10px;margin-top: 30px;">
+                          <span
+                            data-toggle="collapse"
+                            data-target="#Withdrawal-Transations-collapse"
+                            style="font-size: 25px;cursor: pointer;color:rgb(74, 144, 226) "
+                          >
+                            Withdrawals
+                          </span>
+
+                          <select
+                            class="float-right Withdrawal-Transaction-Filter-Dropdown border border-primary"
+                          >
+                            <option value="All" selected="selected"
+                              >All Transactions</option
+                            >
+                            <option value="BTC">BTC</option>
+                            <option value="ETH">ETH</option>
+                            <option value="LTC">LTC</option>
+                            <option value="EOS">EOS</option>
+                            <option value="BCH">BCH</option>
+                          </select>
+                        </div>
+                        <div
+                          id="Withdrawal-Transations-collapse"
+                          class="table table-striped table-bordered collapse show"
+                        >
+                          <table style="width: 100%">
+                            <thead>
+                              <tr>
+                                <th width="25%">Time</th>
+                                <th width="16%">Token</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th width="40%">Reference</th>
+                              </tr>
+                            </thead>
+
+                            <tbody id="Withdrawal-Transactions-div"></tbody>
+                          </table>
+                        </div>
+                        <div
+                          class="modal fade"
+                          id="Withdrawal-Transaction-Modal"
+                          tabindex="-1"
+                          role="dialog"
+                          aria-labelledby="exampleModalCenterTitle"
+                          aria-hidden="true"
+                        >
+                          <div
+                            class="modal-dialog modal-dialog-centered"
+                            role="document"
+                          >
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5
+                                  class="modal-title"
+                                  id="exampleModalLongTitle"
+                                >
+                                  Transaction Details
+                                </h5>
+                                <button
+                                  type="button"
+                                  class="close"
+                                  data-dismiss="modal"
+                                  aria-label="Close"
+                                >
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div id="Withdrawal-Transaction-Details"></div>
+                              </div>
+                              <div class="modal-footer">
+                                <button
+                                  type="button"
+                                  class="btn btn-light border border-primary Close-Modal-Button"
+                                  data-dismiss="modal"
+                                >
+                                  Close
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="Charts" class="card">
+                  <div class="card-header">
+                    <h4 class="mb-0">
+                      <span
+                        class="display-4"
+                        data-toggle="collapse"
+                        data-target="#Charts-collapse"
+                        aria-expanded="true"
+                        aria-controls="Charts-collapse"
+                        style="cursor: pointer;font-size: 25px;"
+                      >
+                        <img
+                          src="./img/Charts.png"
+                          style="height:45px;width: auto;"
+                        />
+                        <strong>Charts</strong></span
+                      >
+                    </h4>
+                    <span
+                      id="Charts-close-Button"
+                      class="float-right Widget-Close-Button"
+                      style="margin-top: -40px;font-size: 20px;"
+                      >x</span
+                    >
+                  </div>
+                  <div id="Charts-collapse" class="collapse show">
+                    <div class="card-body">
+                      <div class="Charts-Filter-Dropdown dropdown">
+                        <button
+                          class="Charts-Filter-Dropdown-Button btn btn-light border border-primary dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton"
+                          data-toggle="dropdown"
+                          aria-haspopup="true"
+                          aria-expanded="false"
+                        >
+                          BTC ( Bitcoin )
+                        </button>
+                        <div
+                          class="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton"
+                        >
+                          <input
+                            id="Charts-Search"
+                            onkeyup="SearchCharts()"
+                            class="border border-primary"
+                            type="text"
+                            style="width: 130px;margin-left: 25px;"
+                            placeholder="Search"
+                          />
+                          <div class="dropdown-divider"></div>
+                          <div
+                            id="Charts-dropdown"
+                            style="max-height: 150px;
+                                overflow-y: auto;
+                                overflow-x: visible;"
+                          >
+                            <a class="dropdown-item">BTC ( Bitcoin )</a>
+                            <a class="dropdown-item">ETH (Ethereum)</a>
+                            <a class="dropdown-item">LTC (Litecoin)</a>
+                            <a class="dropdown-item">EOS (EOS)</a>
+                            <a class="dropdown-item">BCH (Bitcoin Cash)</a>
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        id="Add-Chart-Button"
+                        class="btn btn-light ChartButtons border border-primary"
+                      >
+                        Add
+                      </button>
+                      <button
+                        id="Reset-Charts"
+                        class="float-right btn btn-light ChartButtons border border-primary"
+                      >
+                        Reset
+                      </button>
+                      <div class="dropdown-divider"></div>
+                      <div id="Selected-Charts">
+                        <span
+                          id="BTC-Chart"
+                          style="width: 250px;display: inline-block;margin-left: 20px;margin-bottom: 20px;"
+                        >
+                          <crypto-widget
+                            type="card"
+                            template="chart3"
+                            color="blue"
+                            assets="BTC~USD"
+                            api="cryptocompare.com"
+                            realtime="true"
+                            animation="flash"
+                          ></crypto-widget>
+                        </span>
+                        <span
+                          id="ETH-Chart"
+                          style="width: 250px;display: inline-block;margin-left: 20px;margin-bottom: 20px;"
+                        >
+                          <crypto-widget
+                            type="card"
+                            template="chart3"
+                            color="blue"
+                            assets="ETH~USD"
+                            api="cryptocompare.com"
+                            realtime="true"
+                            animation="flash"
+                          ></crypto-widget>
+                        </span>
+                        <span
+                          id="LTC-Chart"
+                          style="width: 250px;display: inline-block;margin-left: 20px;margin-bottom: 20px;"
+                        >
+                          <crypto-widget
+                            type="card"
+                            template="chart3"
+                            color="blue"
+                            assets="LTC~USD"
+                            api="cryptocompare.com"
+                            realtime="true"
+                            animation="flash"
+                          ></crypto-widget>
+                        </span>
+                        <span
+                          id="BCH-Chart"
+                          style="width: 250px;display: inline-block;margin-left: 20px;margin-bottom: 20px;"
+                        >
+                          <crypto-widget
+                            type="card"
+                            template="chart3"
+                            color="blue"
+                            assets="BCH~USD"
+                            api="cryptocompare.com"
+                            realtime="true"
+                            animation="flash"
+                          ></crypto-widget>
+                        </span>
+                        <span
+                          id="EOS-Chart"
+                          style="width: 250px;display: inline-block;margin-left: 20px;margin-bottom: 20px;"
+                        >
+                          <crypto-widget
+                            type="card"
+                            template="chart3"
+                            color="blue"
+                            assets="EOS~USD"
+                            api="cryptocompare.com"
+                            realtime="true"
+                            animation="flash"
+                          ></crypto-widget>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div id="BuyGCR" class="card">
+                  <div class="card-header">
+                    <h4 class="mb-0">
+                      <span
+                        class="display-4"
+                        data-toggle="collapse"
+                        data-target="#buyGCR-collapse"
+                        aria-expanded="true"
+                        aria-controls="buyGCR-collapse"
+                        style="cursor: pointer;font-size: 25px;"
+                      >
+                        <img
+                          src="./img/BuyGCR.png"
+                          style="height:45px;width: auto;"
+                        />
+                        <strong>Buy GCR</strong></span
+                      >
+                    </h4>
+                    <span
+                      id="BuyGCR-close-Button"
+                      class="float-right Widget-Close-Button"
+                      style="margin-top: -40px;font-size: 20px;"
+                      >x</span
+                    >
+                  </div>
+                  <div id="buyGCR-collapse" class="collapse show">
+                    <div class="card-body">
+                      <a
+                        href="https://yobit.net/en/trade/GCR/BTC"
+                        target="_blank"
+                        >From YoBit</a
+                      ><br />
+                      <a href="https://crypto-bridge.org" target="_blank"
+                        >From Cryptobridge</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="row">
+              <div id="accordion" class="col-md-10 StuffTwo">
+                <div class="card">
+                  <div class="card-header" id="tro-heading">
+                    <h5 class="mb-0">
+                      <img
+                        src="./img/treos.png"
+                        alt=""
+                        style="height:32px;width: auto;"
+                      />
+                      <button
+                        class="btn btn-link"
+                        data-toggle="collapse"
+                        data-target="#tro-collapse"
+                        aria-expanded="false"
+                        aria-controls="tro-collapse"
+                      >
+                        TREOS Origin: TRO
+                      </button>
+                    </h5>
+                  </div>
+
+                  <div
+                    id="tro-collapse"
+                    class="collapse"
+                    aria-labelledby="tro-heading"
+                    data-parent="#accordion"
+                  >
+                    <div class="card-body">
+                      <table class="table">
+                        <!--<tr>
+                                              <td>
+                                                  Address: <span class="tro-address">[TRO Address]</span>
+                                              </td>
+                                              <td>
+                                                  Total Balance: <span class="tro-balance"> {{ this.getTokenBalance('TRO') }}</span>
+                                              </td>
+                                              <td>
+                                                  <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#depositModal" onclick="doDeposit('TRO')">Deposit</button>
+                                              </td>
+                                          </tr>
+      -->
+                        <tr>
+                          <td>
+                            Address:
+                            <span class="tro-address"
+                              >[TRO Address Spendable]</span
+                            >
+                          </td>
+                          <td>
+                            Spendable Balance:
+                            <!-- <span class="tro-spendable">
+                              {{ this.getTokenBalance("TRO_SPENDABLE") }}</span
+                            > -->
+                          </td>
+                          <td></td>
+
+                          <td>
+                            <button
+                              class="btn btn-success btn-sm"
+                              data-toggle="modal"
+                              data-target="#depositModal"
+                              onclick="doDeposit('TRO_SPENDABLE')"
+                            >
+                              Deposit
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              class="btn btn-danger btn-sm"
+                              data-toggle="modal"
+                              data-target="#withdrawModal"
+                              onclick="doWithdraw('TRO_SPENDABLE')"
+                            >
+                              Withdraw
+                            </button>
+                          </td>
+                          <td>
+                            <button
+                              class="btn btn-danger btn-sm"
+                              style="background-color: blue; border: none"
+                              data-toggle="modal"
+                              data-target="#withdrawModal"
+                              onclick="doWithdraw('TRO_SPENDABLE')"
+                            >
+                              Sell TRO
+                            </button>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header" id="tro-ubi-heading">
+                    <h5 class="mb-0">
+                      <img
+                        src="./img/treos.png"
+                        alt=""
+                        style="height:32px;width: auto;"
+                      />
+                      <button
+                        class="btn btn-link"
+                        data-toggle="collapse"
+                        data-target="#tro-ubi-collapse"
+                        aria-expanded="false"
+                        aria-controls="tro-ubi-collapse"
+                      >
+                        TREOS Origin UBI: TRO UBI
+                      </button>
+                    </h5>
+                  </div>
+
+                  <div
+                    id="tro-ubi-collapse"
+                    class="collapse"
+                    aria-labelledby="tro:ubi-heading"
+                    data-parent="#accordion"
+                  >
+                    <div class="card-body">
+                      <table class="table">
+                        <tr>
+                          <td>
+                            Address:
+                            <span class="tro-address">[TRO UBI Address]</span>
+                          </td>
+                          <td>
+                            Total UBI Balance:
+                            <!-- <span class="tro-balance">
+                              {{ this.getTokenBalance("TRO") }}</span
+                            > -->
+                          </td>
+                          <td>
+                            <button
+                              class="btn btn-danger btn-sm"
+                              style="background-color: blue; border: none"
+                              data-toggle="modal"
+                              data-target="#withdrawModal"
+                              onclick="doWithdraw('TRO')"
+                            >
+                              Sell TRO
+                            </button>
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sortable">
+                  <div class="card GCR-Wallet">
+                    <div class="card-header" id="gcr-heading">
+                      <h5 class="mb-0">
+                        <img
+                          src="./img/GCR.png"
+                          alt=""
+                          style="height:32px;width: auto;"
+                        />
+                        <button
+                          class="btn btn-link collapsed"
+                          data-toggle="collapse"
+                          data-target="#gcr-collapse"
+                          aria-expanded="false"
+                          aria-controls="gcr-collapse"
+                        >
+                          Global Currency Reserve: GCR
+                        </button>
+                        <!-- <span class="float-right">
+                        Balance: {{ this.getTokenBalance("GCR") }}
+                      </span> -->
+                        <span
+                          id="GCR-Wallet-Close-Button"
+                          class="float-right Close-Button"
+                          >x</span
+                        >
+                      </h5>
+                    </div>
+                    <div
+                      id="gcr-collapse"
+                      class="collapse"
+                      aria-labelledby="headingTwo"
+                      data-parent="#accordion"
+                    >
+                      <div class="card-body">
+                        <table class="table table">
+                          <tr>
+                            <td>
+                              Address:
+                              <span class="gcr-address">[GCR Address]</span>
+                            </td>
+                            <td>
+                              Total Balance: <span class="gcr-balance"></span>
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-warning btn-sm"
+                                data-toggle="modal"
+                                data-target="#buyModal"
+                                onclick="buyTRO('GCR')"
+                              >
+                                Buy TRO
+                              </button>
+                            </td>
+                            <!--<td>
+                                              <div class="dropdown">
+                                                  <button class="dropbtn">Buy GCR</button>
+                                                  <div class="dropdown-content">
+                                                      <a href="https://yobit.net/en/trade/GCR/BTC">From YoBit</a>
+                                                      <a href="https://crypto-bridge.org">From Cryptobridge</a>
+                                                      <a href="mailto:jonv@treos.team">From Jon (because he's awesome!)</a>
+                                                  </div>
+                                              </div>
+                                              </td>-->
+                            <td>
+                              <button
+                                class="btn btn-success btn-sm"
+                                data-toggle="modal"
+                                data-target="#depositModal"
+                                onclick="doDeposit('GCR')"
+                              >
+                                Deposit
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-danger btn-sm"
+                                data-toggle="modal"
+                                data-target="#withdrawModal"
+                                onclick="doWithdraw('GCR')"
+                              >
+                                Withdraw
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">
+                              TRO Conversion rate: 1 TRO = <span>1.00</span> GCR
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card BTC-Wallet">
+                    <div class="card-header" id="btc-heading">
+                      <h5 class="mb-0">
+                        <img
+                          src="./img/BTC.png"
+                          alt=""
+                          style="height:32px;width: auto;"
+                        />
+                        <button
+                          class="btn btn-link collapsed"
+                          data-toggle="collapse"
+                          data-target="#btc-collapse"
+                          aria-expanded="false"
+                          aria-controls="btc-collapse"
+                        >
+                          Bitcoin: BTC
+                        </button>
+                        <!-- <span class="float-right">
+                        Balance: {{ this.getTokenBalance("BTC") }}
+                      </span> -->
+                        <span
+                          id="BTC-Wallet-Close-Button"
+                          class="float-right Close-Button"
+                          >x</span
+                        >
+                      </h5>
+                    </div>
+                    <div
+                      id="btc-collapse"
+                      class="collapse"
+                      aria-labelledby="btc-heading"
+                      data-parent="#accordion"
+                    >
+                      <div class="card-body">
+                        <table class="table table">
+                          <tr>
+                            <td>
+                              Address:
+                              <span class="btc-address">[BTC Address]</span>
+                            </td>
+                            <td>
+                              Total Balance:
+                              <!-- <span class="btc-balance">
+                              {{ this.getTokenBalance("BTC") }}</span
+                            > -->
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-warning btn-sm"
+                                data-toggle="modal"
+                                data-target="#buyModal"
+                                onclick="buyTRO('BTC')"
+                              >
+                                Buy TRO
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-success btn-sm"
+                                data-toggle="modal"
+                                data-target="#depositModal"
+                                onclick="doDeposit('BTC')"
+                              >
+                                Deposit
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-danger btn-sm"
+                                data-toggle="modal"
+                                data-target="#withdrawModal"
+                                onclick="doWithdraw('BTC')"
+                              >
+                                Withdraw
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">
+                              TRO Conversion rate: 1 TRO =
+                              <span class="btc-rate">1.00</span> BTC
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card BCH-Wallet">
+                    <div class="card-header" id="bch-heading">
+                      <h5 class="mb-0">
+                        <img
+                          src="./img/BCH.png"
+                          alt=""
+                          style="height:32px;width: auto;"
+                        />
+                        <button
+                          class="btn btn-link collapsed"
+                          data-toggle="collapse"
+                          data-target="#bch-collapse"
+                          aria-expanded="false"
+                          aria-controls="bch-collapse"
+                        >
+                          Bitcoin Cash: BCH
+                        </button>
+                        <!-- <span class="float-right">
+                        Balance: {{ this.getTokenBalance("BCH") }}
+                      </span> -->
+                        <span
+                          id="BCH-Wallet-Close-Button"
+                          class="float-right Close-Button"
+                          >x</span
+                        >
+                      </h5>
+                    </div>
+                    <div
+                      id="bch-collapse"
+                      class="collapse"
+                      aria-labelledby="bch-heading"
+                      data-parent="#accordion"
+                    >
+                      <div class="card-body">
+                        <table class="table table">
+                          <tr>
+                            <td>
+                              Address:
+                              <span class="bch-address">[BCH Address]</span>
+                            </td>
+                            <td>
+                              Total Balance:
+                              <!-- <span class="bch-balance">
+                              {{ this.getTokenBalance("BCH") }}</span
+                            > -->
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-warning btn-sm"
+                                data-toggle="modal"
+                                data-target="#buyModal"
+                                onclick="buyTRO('BCH')"
+                              >
+                                Buy TRO
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-success btn-sm"
+                                data-toggle="modal"
+                                data-target="#depositModal"
+                                onclick="doDeposit('BCH')"
+                              >
+                                Deposit
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-danger btn-sm"
+                                data-toggle="modal"
+                                data-target="#withdrawModal"
+                                onclick="doWithdraw('BCH')"
+                              >
+                                Withdraw
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">
+                              TRO Conversion rate: 1 TRO =
+                              <span class="bch-rate">1.00</span> BCH
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="card ETH-Wallet">
+                    <div class="card-header" id="eth-heading">
+                      <h5 class="mb-0">
+                        <img
+                          src="./img/ETH.png"
+                          alt=""
+                          style="height:32px;width: auto;"
+                        />
+                        <button
+                          class="btn btn-link collapsed"
+                          data-toggle="collapse"
+                          data-target="#eth-collapse"
+                          aria-expanded="false"
+                          aria-controls="eth-collapse"
+                        >
+                          Ethereum: ETH
+                        </button>
+                        <!-- <span class="float-right">
+                        Balance: {{ this.getTokenBalance("ETH") }}
+                      </span> -->
+                        <span
+                          id="ETH-Wallet-Close-Button"
+                          class="float-right Close-Button"
+                          >x</span
+                        >
+                      </h5>
+                    </div>
+                    <div
+                      id="eth-collapse"
+                      class="collapse"
+                      aria-labelledby="eth-heading"
+                      data-parent="#accordion"
+                    >
+                      <div class="card-body">
+                        <table class="table table">
+                          <tr>
+                            <td>
+                              Address:
+                              <span class="eth-address">[ETH Address]</span>
+                            </td>
+                            <td>
+                              Total Balance:
+                              <!-- <span class="eth-balance">
+                              {{ this.getTokenBalance("ETH") }}</span
+                            > -->
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-warning btn-sm"
+                                data-toggle="modal"
+                                data-target="#buyModal"
+                                onclick="buyTRO('ETH')"
+                              >
+                                Buy TRO
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-success btn-sm"
+                                data-toggle="modal"
+                                data-target="#depositModal"
+                                onclick="doDeposit('ETH')"
+                              >
+                                Deposit
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-danger btn-sm"
+                                data-toggle="modal"
+                                data-target="#withdrawModal"
+                                onclick="doWithdraw('ETH')"
+                              >
+                                Withdraw
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">
+                              TRO Conversion rate: 1 TRO =
+                              <span class="eth-rate">1.00</span> ETH
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <!--
+                          <div class="card EOS-Wallet">
+                              <div class="card-header" id="eos-heading">
+                                  <h5 class="mb-0">
+                                      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#eos-collapse" aria-expanded="false" aria-controls="eos-collapse">
+                                          EOS: EOS
+                                      </button>
+                                      <span class="float-right">
+                                          Balance:  {{ this.getTokenBalance('EOS') }}
+                                      </span>
+                                      <span id="EOS-Wallet-Close-Button" class="float-right Close-Button">x</span>
+                                  </h5>
+                              </div>
+                              <div id="eos-collapse" class="collapse" aria-labelledby="eos-heading" data-parent="#accordion">
+                                  <div class="card-body">
+      
+                                      <table class="table table">
+                                          <tr>
+                                              <td>
+                                                  Address: <span class="eos-address"></span>
+                                              </td>
+                                              <td>
+                                                  Total Balance: <span class="eos-balance"> {{ this.getTokenBalance('EOS') }}</span>
+                                              </td>
+                                              <td>
+                                                  <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#buyModal" onclick="buyTRO('EOS')">Buy TRO</button>
+                                              </td>
+                                              <td>
+                                                  <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#depositModal" onclick="doDeposit('EOS')">Deposit</button>
+                                              </td>
+                                              <td>
+                                                  <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#withdrawModal" onclick="doWithdraw('EOS')">Withdraw</button>
+                                              </td>
+                                          </tr>
+                                          <tr>
+                                              <td colspan="4">
+                                                  TRO Conversion rate: 1 TRO = <span class="eos-rate">1.00</span> EOS
+                                              </td>
+                                          </tr>
+                                      </table>
+      
+                                  </div>
+                              </div>
+                          </div>
+      -->
+                  <div class="card LTC-Wallet">
+                    <div class="card-header" id="ltc-heading">
+                      <h5 class="mb-0">
+                        <img
+                          src="./img/LTC.png"
+                          alt=""
+                          style="height:32px;width: auto;"
+                        />
+                        <button
+                          class="btn btn-link collapsed"
+                          data-toggle="collapse"
+                          data-target="#ltc-collapse"
+                          aria-expanded="false"
+                          aria-controls="ltc-collapse"
+                        >
+                          Litecoin: LTC
+                        </button>
+                        <!-- <span class="float-right">
+                        Balance: {{ this.getTokenBalance("LTC") }}
+                      </span> -->
+                        <span
+                          id="LTC-Wallet-Close-Button"
+                          class="float-right Close-Button"
+                          >x</span
+                        >
+                      </h5>
+                    </div>
+                    <div
+                      id="ltc-collapse"
+                      class="collapse"
+                      aria-labelledby="ltc-heading"
+                      data-parent="#accordion"
+                    >
+                      <div class="card-body">
+                        <table class="table table">
+                          <tr>
+                            <td>
+                              Address:
+                              <span class="ltc-address">[LTC Address]</span>
+                            </td>
+                            <td>
+                              Total Balance:
+                              <!-- <span class="ltc-balance">
+                              {{ this.getTokenBalance("LTC") }}</span
+                            > -->
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-warning btn-sm"
+                                data-toggle="modal"
+                                data-target="#buyModal"
+                                onclick="buyTRO('LTC')"
+                              >
+                                Buy TRO
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-success btn-sm"
+                                data-toggle="modal"
+                                data-target="#depositModal"
+                                onclick="doDeposit('LTC')"
+                              >
+                                Deposit
+                              </button>
+                            </td>
+                            <td>
+                              <button
+                                class="btn btn-danger btn-sm"
+                                data-toggle="modal"
+                                data-target="#withdrawModal"
+                                onclick="doWithdraw('LTC')"
+                              >
+                                Withdraw
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="4">
+                              TRO Conversion rate: 1 TRO =
+                              <span class="ltc-rate">1.00</span> LTC
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                id="Wallets-Panel"
+                class="col-md-2 border-top border-bottom border-left"
+              >
+                <p style="margin-left: -10px">
+                  <!-- Wallets -->
+                  <img
+                    src="./img/treos.png"
+                    style="height:40px;width: auto;margin-bottom: -10px; margin-left: 10px;"
+                  />
+                </p>
+                <p>
+                  <input
+                    id="Wallet-Widget-Search"
+                    type="text"
+                    placeholder="Search"
+                    onkeyup="SearchWallets()"
+                    style="width: 60px;margin-left: -7px"
+                  />
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="tab-pane" id="referrals" role="tabpanel" aria-labelledby="referrals-tab">
+            <div class="row">
+                <div class="col-md-4 card">
+                    <div class="card-body">
+                        <p>
+                            My Referral Link:<br>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input class="referral-link form-control" type="text" value="{{ this.getReferralLink() }}" id="txt-ref-link" onkeypress="return false">
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="#" onclick="return copyToClipBoard()" id="a-copy-ref"  data-toggle="popover" title="Your referral link" data-content="Your referral link has been successfully copied!">
+                                        <img src="/images/clipboard-icon.png" width="100%">
+                                    </a>
+    
+                                </div>
+                            </div>
+    
+                        </p>
+    
+                        {% if this.getMyReferrer() != ""  %}
+    
+                        <p>
+                            My Referrer:<br>
+                            <input class="my-referrer form-control" disabled type="text" value="{{ this.getMyReferrer() }}">
+                        </p>
+    
+                        {% endif %}
+                    </div>
+    
+                </div>
+                <div class="col-md-8">
+                    {% for profile in this.getMyReferrals() %}
+                        <div id="accordion">
+                            <div class="card">
+                                <div class="card-header" id="ref{{ profile['profile_id'] }}-heading">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link" data-toggle="collapse" data-target="#ref{{ profile['profile_id'] }}-collapse" aria-expanded="true" aria-controls="ref{{ profile['profile_id'] }}-collapse">
+                                            {{ profile['login'] }}
+                                        </button>
+                                    </h5>
+                                </div>
+    
+                                <div id="ref{{ profile['profile_id'] }}-collapse" class="collapse" aria-labelledby="ref{{ profile['profile_id'] }}-heading" data-parent="#accordion">
+                                    <div class="card-body">
+                                        First name: {{ profile['firstName'] }}<br>
+                                        Last name: {{ profile['lastName'] }}<br>
+                                        Sign up date: {{ profile['added_date'] }}
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                    {% endfor %}
+    
+                </div>
+            </div>
+        </div>
+    
+        <div class="tab-pane fade" id="bounty" role="tabpanel" aria-labelledby="bounty-tab">Bounty...</div>
+        <div class="tab-pane fade" id="commission" role="tabpanel" aria-labelledby="commission-tab">Commission...</div> -->
+    </div>
+    <!-- MODALS -->
+    <div id="depositModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              Deposit <span class="deposit-token"></span>
+            </h4>
+          </div>
+          <div class="modal-body text-center">
+            <p>Send <span class="deposit-token"></span> to this address:</p>
+            <p id="deposit-address"></p>
+            <img src="" id="img-deposit-address" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="buyModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+            <h4 class="modal-title">
+              Buy TRO with <span class="tro-token"></span>
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-4">
+                <label>Amount to buy(TRO )</label>
+              </div>
+              <div class="col-md-8">
+                <input type="number" class="form-control" id="buy-amount" />
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-md-12 align-right">
+                <h6 class="h6 m2-2">TRO Conversion Rates:</h6>
+                <table class="table mt-2">
+                  <tr>
+                    <th>
+                      1 TRO =
+                    </th>
+                    <th>
+                      <span class="buy-rate"></span>
+                      <span class="tro-token"></span>
+                    </th>
+                  </tr>
+
+                  <tr>
+                    <td><span class="tro-amount"></span> TRO =</td>
+                    <td><span class="gcr-required"></span> GCR</td>
+                  </tr>
+
+                  <tr>
+                    <td><span class="tro-amount"></span> TRO =</td>
+                    <td><span class="btc-required"></span> BTC</td>
+                  </tr>
+
+                  <tr>
+                    <td><span class="tro-amount"></span> TRO =</td>
+                    <td><span class="bch-required"></span> BCH</td>
+                  </tr>
+
+                  <tr>
+                    <td><span class="tro-amount"></span> TRO =</td>
+                    <td><span class="eth-required"></span> ETH</td>
+                  </tr>
+                  <!--
+                                <tr>
+                                    <td>
+                                        <span class="tro-amount"></span> TRO =
+                                    </td>
+                                    <td>
+                                        <span class="eos-required"></span> EOS
+                                    </td>
+                                </tr>
+    -->
+                  <tr>
+                    <td><span class="tro-amount"></span> TRO =</td>
+                    <td><span class="ltc-required"></span> LTC</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" onclick="doBuyTRO()">
+              BUY
+            </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="withdrawModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title float-left">
+              Withdraw <span class="withdraw-token"></span>
+            </h4>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <label>Address</label><br />
+            <input
+              type="text"
+              id="AddressBox"
+              class="form-control"
+              oninput="CheckAddress()"
+            /><br />
+            <label>Amount</label><br />
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text withdraw-token"></span>
+              </div>
+              <input type="number" class="form-control" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" data-dismiss="modal">
+              Withdraw
+            </button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Scripts  -->
+
+    <script>
+      var premiumCryptocurrencyWidgets = {
+        pluginUrl: "./Charts"
+      };
+    </script>
+    <script src="./Charts/assets/js/dist/app.js"></script>
+
+    <!-- <script>
+
+      let UserAddressListForAllTokens = [];
+      let ParticularTokenAddressList = [];
+      // let LoggedinUserId = JSON.parse(localStorage["TempUser1"]);
+
+      //   var btc_rate = 1 / parseFloat( {{ this.getFiatRate('BTC') }} );
+      //   var bch_rate = 1 / parseFloat( {{ this.getFiatRate('BCH') }} );
+      //   var eth_rate = 1 / parseFloat( {{ this.getFiatRate('ETH') }} );
+      //   var eos_rate = 1 / parseFloat( {{ this.getFiatRate('EOS') }} );
+      //   var ltc_rate = 1 / parseFloat( {{ this.getFiatRate('LTC') }} );
+    
+      //   var gold_price = {{ this.getFiatRate('USD') }};
+      //   var gcr_rate = 1 / gold_price;
+    
+      //   var btc_balance = parseFloat({{ this.getTokenBalance('BTC') }});
+      //   var bch_balance = parseFloat({{ this.getTokenBalance('BCH') }});
+      //   var eth_balance = parseFloat({{ this.getTokenBalance('ETH') }});
+      // //  var eos_balance = parseFloat({{ this.getTokenBalance('EOS') }});
+      //   var gcr_balance = parseFloat({{ this.getTokenBalance('GCR') }});
+      //   var ltc_balance = parseFloat({{ this.getTokenBalance('LTC') }});
+    
+        // var selected_rate = 0;
+        // var selected_token = '';
+        // var selected_balance = 0;
+        // var member_id = {{ this.getProfileID() }};
+    
+        function getDepositAddress(currency, obj){
+            $.ajax({
+                type: "GET",
+                url: "{{ this.getBaseUrl() }}/cp/get_address.php?member_id=" + member_id +"&token="+ currency,
+                success: function (data) {
+                    $(obj).html(data);
+                }
+            });
+    
+        }
+        /*..*/
+        function doDeposit(currency){
+            if(currency == "TRO_SPENDABLE")
+                $(".deposit-token").html(currency);
+            else
+                $(".deposit-token").html(currency);
+    
+            $.ajax({
+                type: "GET",
+                url: "{{ this.getBaseUrl() }}/cp/get_address.php?member_id=" + member_id +"&token="+ currency,
+                success: function (data) {
+                    $("#deposit-address").html(data);
+                    $("#img-deposit-address").attr("src","https://liquidtelecom.hyperefficient.net/contractor_portal/qr_code.php?b_address="+data);
+                }
+            });
+    
+        }
+    
+        function buyTRO(currency){
+            $(".tro-token").html(currency)
+    
+            if(currency == "BTC"){
+                $(".buy-rate").html(btc_rate*gold_price);
+                selected_token = "BTC";
+                selected_rate = btc_rate;
+                selected_balance = btc_balance;
+            }
+            if(currency == "BCH"){
+                $(".buy-rate").html(bch_rate*gold_price);
+                selected_token = "BCH";
+                selected_rate = bch_rate;
+                selected_balance = bch_balance;
+            }
+            if(currency == "ETH"){
+                $(".buy-rate").html(eth_rate*gold_price);
+                selected_token = "ETH";
+                selected_rate = eth_rate;
+                selected_balance = eth_balance;
+            }
+     //       if(currency == "EOS"){
+     //           $(".buy-rate").html(eos_rate*gold_price);
+     //           selected_token = "EOS";
+    //            selected_rate = eos_rate;
+    //            selected_balance = eos_balance;
+    //        }
+            if(currency == "GCR"){
+                $(".buy-rate").html(gcr_rate*gold_price);
+                selected_token = "GCR";
+                selected_rate = gcr_rate;
+                selected_balance = gcr_balance;
+            }
+            if(currency == "LTC"){
+                $(".buy-rate").html(ltc_rate*gold_price);
+                selected_token = "LTC";
+                selected_rate = ltc_rate;
+                selected_balance = ltc_balance;
+            }
+    
+        }
+    
+        function doBuyTRO(){
+            if($("#buy-amount").val() == ""){
+                $("#buy-amount").focus();
+                return false;
+            }
+    
+            var required_balance = selected_rate * gold_price * parseFloat($("#buy-amount").val());
+    
+            if(selected_balance < required_balance){
+                alert('You don not have sufficient '+ selected_token);
+                return false;
+            }
+    
+            window.location = 'admin.php?target=financialInfo&tro='+$("#buy-amount").val()+'&token='+selected_token+'&bal='+required_balance;
+        }
+    
+        function doWithdraw(currency){
+            $(".withdraw-token").html(currency);
+            ParticularTokenAddressList = [];
+            for(Address of UserAddressListForAllTokens)
+            {
+              if(Address.token == currency)
+                { 
+                  ParticularTokenAddressList.push(Address.address);
+                }
+            }
+        }
+    
+        $(document).ready(function(){
+            $(".btc-rate").html( btc_rate.toFixed(8) * gold_price );
+            $(".bch-rate").html( bch_rate.toFixed(8) * gold_price );
+            $(".eth-rate").html( eth_rate.toFixed(8) * gold_price );
+            $(".eos-rate").html( eos_rate.toFixed(8) * gold_price );
+            $(".gcr-rate").html( gcr_rate.toFixed(8) * gold_price );
+            $(".ltc-rate").html( ltc_rate.toFixed(8) * gold_price );
+    
+            //getDepositAddress("TRO", $(".tro-address"));
+            //getDepositAddress("GCR", $(".gcr-address"));
+            //getDepositAddress("BCH", $(".bch-address"));
+            //getDepositAddress("ETH", $(".eth-address"));
+            //getDepositAddress("EOS", $(".eos-address"));
+            //getDepositAddress("BTC", $(".btc-address"));
+            //getDepositAddress("LTC", $(".ltc-address"));
+    
+            getDepositAddress("TRO", "[TRO_Address]");
+            getDepositAddress("GCR", "[GCR_Address]");
+            getDepositAddress("BCH", "[BCH_Address]");
+            getDepositAddress("ETH", "[ETH_Address]");
+            getDepositAddress("BTC", "[BTC_Address]");
+            getDepositAddress("LTC", "[LTC_Address]");
+    
+    
+            $("#buy-amount").keyup(function(){
+                var amt = parseFloat($("#buy-amount").val());
+                var btc_price = btc_rate * gold_price * amt;
+                var bch_price = bch_rate * gold_price * amt;
+                var eth_price = eth_rate * gold_price * amt;
+                var eos_price = eos_rate * gold_price * amt;
+                var gcr_price = gcr_rate * gold_price * amt;
+                var ltc_price = ltc_rate * gold_price * amt;
+    
+                $(".tro-amount").html( amt );
+                $(".btc-required").html( btc_price.toFixed(8) );
+                $(".bch-required").html( bch_price.toFixed(8) );
+                $(".eth-required").html( eth_price.toFixed(8) );
+                $(".eos-required").html( eos_price.toFixed(8) );
+                $(".gcr-required").html( gcr_price.toFixed(8) );
+                $(".ltc-required").html( ltc_price.toFixed(8) );
+            });
+    
+    
+            $('#a-copy-ref').popover({
+                container: 'body'
+            })
+    
+    
+        })
+    
+        function copyToClipBoard(){
+            var copyText = document.getElementById("txt-ref-link");
+            copyText.select();
+            document.execCommand("copy");
+        }
+
+        $.post("api/GetAddressOfUser",{UserID:LoggedinUserId},function(Addresses){
+          UserAddressListForAllTokens = Addresses;
+        })
+
+        function CheckAddress() {
+
+          var EnteredAddress = $("#AddressBox").val();
+          for(TokenAddress of ParticularTokenAddressList)
+          { 
+            if(TokenAddress == EnteredAddress)
+            { 
+              setTimeout(() => {
+                $("#AddressBox").val("");
+                window.alert("Withdrawal address cannot be the same as the sending address")
+              }, 0);
+              break;
+            }
+          }
+        }
+    
+    </script> -->
+
+  </body>
+</html>
